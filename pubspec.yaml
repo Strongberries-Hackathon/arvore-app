@@ -48,6 +48,21 @@ flutter:
   uses-material-design: true
   assets:
     - assets/initial_image.png
+    - assets/student.png
+    - assets/teacher.png
+    - assets/books.png
+    - assets/tree.png
+    - assets/trees.png
+    - assets/activities.png
     - assets/loading.flr
+    - assets/loading_book.flr
+    - assets/loading_clear.flr
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand-Bold.ttf
+
+
 
 

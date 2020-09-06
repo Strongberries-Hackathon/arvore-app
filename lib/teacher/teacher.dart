@@ -1,16 +1,12 @@
-import 'package:arvore_app/splashscreen.dart';
+import 'package:arvore_app/library/library.dart';
+import 'package:arvore_app/teacher/activities_teacher.dart';
 import 'package:arvore_app/util/constants.dart';
-import 'package:arvore_app/student/student.dart';
-import 'package:arvore_app/teacher/teacher.dart';
 import 'package:flutter/material.dart';
 
 
-void main() {
-  runApp(
-    AppConstants(
-      child: SplashScreenPage(),
-    ),
-  );
+class TeacherActionsPage extends StatefulWidget {
+  @override
+  _TeacherActionsPageState createState() => _TeacherActionsPageState();
 }
 
 Map<int, Color> color = {
@@ -28,46 +24,38 @@ Map<int, Color> color = {
 
 MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class _TeacherActionsPageState extends State<TeacherActionsPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppConstants.of(context).labelTitle,
+      title: AppConstants
+          .of(context)
+          .labelTitle,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFF7F4E6),
+        scaffoldBackgroundColor: const Color(0xFFF7F4E6),
         primarySwatch: colorCustom,
         bottomAppBarColor: colorCustom,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: AppConstants.of(context).labelTitle),
+      home: TeacherActionsWidget(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {}
-
+class TeacherActionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Center(
+     body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 120.0),
+              padding: EdgeInsets.only(top: 60.0),
               child: Text(
-                AppConstants.of(context).labelTitle,
+                AppConstants
+                    .of(context)
+                    .labelTitle,
                 style: TextStyle(
                   color: Color(0xFF619D5C),
                   fontWeight: FontWeight.bold,
@@ -77,7 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-              child: Text(AppConstants.of(context).labelCreatedBy,
+              child: Text(AppConstants
+                  .of(context)
+                  .labelCreatedBy,
                   style: TextStyle(
                     color: Color(0xFF787878),
                     fontWeight: FontWeight.bold,
@@ -87,37 +77,20 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.only(bottom: 60.0),
             ),
             Container(
-              height: 45,
-              width: 250,
-              decoration: new BoxDecoration(
-                  color: Color(0xFFFF9900),
-                  borderRadius: BorderRadius.circular(20.0)),
-              child: Center(
-                child: Text(AppConstants.of(context).labelSelectProfile,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      fontFamily: 'Quicksand',
-                    )),
-              ),
-            ),
-            Container(
                 padding: EdgeInsets.only(top: 60.0),
                 child: Container(
                   height: 65,
                   width: 350,
                   child: RaisedButton.icon(
                       onPressed: () {
-                        Navigator.push(context, new MaterialPageRoute(builder: (context) => StudentActionsPage()),
+                        Navigator.push(context, new MaterialPageRoute(builder: (context) => LibraryPage()),
                         );
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                          BorderRadius.all(Radius.circular(10.0))),
                       label: Padding(
-                        child: Text(AppConstants.of(context).labelStudentProfile,
+                        child: Text(AppConstants.of(context).labelLibrary,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -126,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             )),
                         padding: EdgeInsets.only(left: 20.0),
                       ),
-                      icon: Image.asset(AppConstants.of(context).iconStudent),
+                      icon: Image.asset(AppConstants.of(context).iconBooks),
                       textColor: Colors.white,
                       splashColor: Color(0xFFFF9900),
                       color: Color(0xFFB1D0AE)),
@@ -138,36 +111,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 350,
                   child: RaisedButton.icon(
                       onPressed: () {
-                         Navigator.push(context, new MaterialPageRoute(builder: (context) => TeacherActionsPage()),
+                        Navigator.push(context, new MaterialPageRoute(builder: (context) => TeacherActivityPage()),
                         );
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                          BorderRadius.all(Radius.circular(10.0))),
                       label: Padding(
-                        child: Text(AppConstants.of(context).labelTeacherProfile,
+                        child: Text(AppConstants.of(context).labelActivities,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 45,
                               fontFamily: 'Quicksand',
                             )),
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: EdgeInsets.only(left: 20.0),
                       ),
-                      icon: Image.asset(AppConstants.of(context).iconTeacher),
+                      icon: Image.asset(AppConstants.of(context).iconActivities),
                       textColor: Colors.white,
                       splashColor: Color(0xFFFF9900),
                       color: Color(0xFFB1D0AE)),
-                ))
+                )),
           ],
         ),
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
