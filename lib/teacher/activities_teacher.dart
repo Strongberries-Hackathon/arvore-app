@@ -36,6 +36,7 @@ class _TeacherActivityPageState extends State<TeacherActivityPage> {
         primarySwatch: colorCustom,
         bottomAppBarColor: colorCustom,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Quicksand',
       ),
       home: TeacherActivityWidget(),
     );
@@ -74,8 +75,6 @@ class TeacherActivityWidget extends StatelessWidget {
             child: ListView(children: <Widget>[
               FormBuilder(
                   key: _fbKey,
-
-                  // autovalidate: true,
                   readOnly: false,
                   child: Column(children: <Widget>[
                     SizedBox(height: 30),
@@ -171,17 +170,25 @@ class TeacherActivityWidget extends StatelessWidget {
 void _saveActivity(data) async {
   Api _api = Api();
   var fromData = new Map<String, dynamic>.from(data);
-  print('Howdy, ${fromData["grades"]}!');
-  print('Howdy, ${fromData["type"]}!');
-  print('Howdy, ${fromData["description"]}!');
-  var tmp = {
-    "book_id": 1,
-    "description": "ddnwidnwidiwndidn",
-    "studants": [7, 8],
-    "type": "ALINEEEEEEE"
-  };
-  // var studands = _api.http_get('grade');
-  await _api.http_post('activity', tmp);
+
+  for (var grade in fromData["grades"]) {
+    var result = await _api.http_get_by_id('grade', grade);
+    if (result.ok) {
+      List<int> studantsArray = [];
+      var data = result.data as dynamic;
+      var studants = data['studants'];
+      await studants.forEach((studant) async {
+        studantsArray.add(studant);
+      });
+      var payload = {
+        "book_id": 1,
+        "description": fromData['description'],
+        "studants": studantsArray,
+        "type": fromData['type']
+      };
+      await _api.http_post('activity', payload);
+    }
+  }
 }
 
 @JsonSerializable()
