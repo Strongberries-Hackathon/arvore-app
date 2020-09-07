@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:arvore_app/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:arvore_app/util/client_api.dart';
 
 class TeacherActivityPage extends StatefulWidget {
   @override
@@ -37,21 +41,133 @@ class _TeacherActivityPageState extends State<TeacherActivityPage> {
   }
 }
 
+class CustomValidator {
+  static FormFieldValidator required({
+    String errorText = 'Campo obrigatório',
+  }) {
+    return (valueCandidate) {
+      if (valueCandidate == null ||
+          ((valueCandidate is Iterable ||
+                  valueCandidate is String ||
+                  valueCandidate is Map) &&
+              valueCandidate.length == 0)) {
+        return errorText;
+      }
+      return null;
+    };
+  }
+}
+
 class TeacherActivityWidget extends StatelessWidget {
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  final ValueChanged _onChanged = (val) => print(val);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("TeacherActivityPage"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
+        appBar: AppBar(
+          title: Text('Nova atividade'),
         ),
-      ),
-    );
+        body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(children: <Widget>[
+              FormBuilder(
+                  key: _fbKey,
+
+                  // autovalidate: true,
+                  readOnly: false,
+                  child: Column(children: <Widget>[
+                    SizedBox(height: 30),
+                    FormBuilderFilterChip(
+                      attribute: 'grade',
+                      decoration: const InputDecoration(
+                        labelText: 'Escolha uma ou mais séries',
+                      ),
+                      options: [
+                        FormBuilderFieldOption(
+                            value: 'primeiroAno', child: Text('1° ANO')),
+                        FormBuilderFieldOption(
+                            value: 'segundoAno', child: Text('2° ANO')),
+                        FormBuilderFieldOption(
+                            value: 'terceiroAno', child: Text('3° ANO')),
+                      ],
+                      validators: [
+                        CustomValidator.required(),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    FormBuilderRadioGroup(
+                      attribute: 'type',
+                      decoration: const InputDecoration(
+                          labelText: 'Escolha o tipo de atividade'),
+                      onChanged: _onChanged,
+                      options: [
+                        FormBuilderFieldOption(
+                            value: 'picture', child: Text('Foto')),
+                        FormBuilderFieldOption(
+                            value: 'drawing', child: Text('Desenho')),
+                      ],
+                      validators: [
+                        CustomValidator.required(),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    FormBuilderTextField(
+                      attribute: 'description',
+                      decoration: InputDecoration(
+                        labelText: 'Descreva a atividade em detalhes',
+                      ),
+                      onChanged: (val) {
+                        print(val);
+                      },
+                      valueTransformer: (text) {
+                        return text == null ? null : num.tryParse(text);
+                      },
+                      validators: [
+                        CustomValidator.required(),
+                      ],
+                      keyboardType: TextInputType.text,
+                    ),
+                  ])),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: MaterialButton(
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        'Salvar',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        if (_fbKey.currentState.saveAndValidate()) {
+                          print(_fbKey.currentState.value);
+                          _saveActivity(_fbKey.currentState.value);
+                        } else {
+                          print(_fbKey.currentState.value);
+                          print('validation failed');
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                      child: MaterialButton(
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Limpar',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      _fbKey.currentState.reset();
+                    },
+                  )),
+                ],
+              ),
+            ])));
   }
+}
+
+void _saveActivity(data) async {
+  Api _api = Api();
+  print('Howdy, $data!');
 }
