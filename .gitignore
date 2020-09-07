@@ -1,6 +1,6 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+.build
+.dart_tool
 .idea
+.gradle
+.packages
 
-# Ignore Gradle build output directory
-build
