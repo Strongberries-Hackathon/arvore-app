@@ -38,24 +38,78 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Center(
-        child: _books == null
-            ? CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: _books.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Book book = _books[index];
-
-                  return ListTile(
-                    title: Text("${book.title}"),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.blueAccent,
-                      backgroundImage: NetworkImage("${book.cover}"),
-                    ),
-                  );
-                }),
-      ),
-    ));
+            body: Center(
+                child: _books == null
+                    ? CircularProgressIndicator()
+                    : ListView.builder(
+                        itemCount: _books.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Book book = _books[index];
+                          return Card(
+                            elevation: 5,
+                            child: Container(
+                              height: 150.0,
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    height: 150.0,
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(5),
+                                            topLeft: Radius.circular(5)),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image:
+                                                NetworkImage("${book.cover}"))),
+                                  ),
+                                  Container(
+                                    height: 100,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("${book.title}",
+                                              style: TextStyle(
+                                                color: Color(0xFF619D5C),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                                fontFamily: 'Quicksand',
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 100,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Text("${book.resume}",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                  fontFamily: 'Quicksand',
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ))));
   }
 
   void getBooks() async {
@@ -65,10 +119,10 @@ class _LibraryPageState extends State<LibraryPage> {
         var in_books = result.data as List<dynamic>;
         in_books.forEach((in_book) {
           _books.add(Book(
+            in_book['id'],
             in_book['title'],
             in_book['resume'],
             in_book['author'],
-            in_book['id'],
             in_book['cover'],
             in_book['page'],
           ));
