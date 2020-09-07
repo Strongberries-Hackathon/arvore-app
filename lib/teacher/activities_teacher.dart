@@ -4,6 +4,7 @@ import 'package:arvore_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:arvore_app/util/client_api.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 class TeacherActivityPage extends StatefulWidget {
   @override
@@ -79,7 +80,7 @@ class TeacherActivityWidget extends StatelessWidget {
                   child: Column(children: <Widget>[
                     SizedBox(height: 30),
                     FormBuilderFilterChip(
-                      attribute: 'grade',
+                      attribute: 'grades',
                       decoration: const InputDecoration(
                         labelText: 'Escolha uma ou mais séries',
                       ),
@@ -121,7 +122,7 @@ class TeacherActivityWidget extends StatelessWidget {
                         print(val);
                       },
                       valueTransformer: (text) {
-                        return text == null ? null : num.tryParse(text);
+                        return text == null ? null : text;
                       },
                       validators: [
                         CustomValidator.required(),
@@ -169,5 +170,24 @@ class TeacherActivityWidget extends StatelessWidget {
 
 void _saveActivity(data) async {
   Api _api = Api();
-  print('Howdy, $data!');
+  var fromData = new Map<String, dynamic>.from(data);
+  print('Howdy, ${fromData["grades"]}!');
+  print('Howdy, ${fromData["type"]}!');
+  print('Howdy, ${fromData["description"]}!');
+  var tmp = {
+    "book_id": 1,
+    "description": "ddnwidnwidiwndidn",
+    "studants": [7, 8],
+    "type": "ALINEEEEEEE"
+  };
+  // var studands = _api.http_get('grade');
+  await _api.http_post('activity', tmp);
+}
+
+@JsonSerializable()
+class Activities {
+  String grades;
+  String type;
+  String description;
+  Activities(this.grades, this.type, this.description);
 }
