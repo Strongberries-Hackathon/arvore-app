@@ -18,6 +18,7 @@ class AppConstants extends InheritedWidget {
   final String imgPathTree = 'assets/initial_image.png';
   final String iconStudent = 'assets/student.png';
   final String iconTeacher = 'assets/teacher.png';
+  final String imageTree = 'assets/tree_map.png';
   final String iconBooks = 'assets/books.png';
   final String iconTree = 'assets/tree.png';
   final String iconForest = 'assets/trees.png';

@@ -61,6 +61,7 @@ flutter:
     - assets/books.png
     - assets/tree.png
     - assets/trees.png
+    - assets/tree_map.png
     - assets/activities.png
     - assets/loading.flr
     - assets/loading_book.flr

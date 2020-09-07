@@ -93,9 +93,10 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                             splashColor: Color(0xFFFF9900),
                             onTap: () async {
-                              Navigator.push(context, new MaterialPageRoute(builder: (context) => BookViewWidget(imageUrls: ["${book.pages}"],imageBorderRadius: BorderRadius.circular(5.0),)),
+                              Navigator.push(context, new MaterialPageRoute(builder: (context) => BookViewWidget(imageUrls: ["${book.pages}"])),
                               );
-                            },
+                            }
+                            ,
                           );
                         },
                       ))));
@@ -113,7 +114,7 @@ class _LibraryPageState extends State<LibraryPage> {
             in_book['resume'],
             in_book['author'],
             in_book['cover'],
-            in_book['page'],
+            List<String>.from(in_book['pages'].map((s) => s as String))
           ));
         });
       });

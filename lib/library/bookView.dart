@@ -32,7 +32,7 @@ class BookViewWidget extends StatefulWidget {
   const BookViewWidget({
     Key key,
     @required this.imageUrls,
-    @required this.imageBorderRadius,
+    this.imageBorderRadius,
     this.imageHeight = 350.0,
   }) : super(key: key);
 
@@ -42,9 +42,6 @@ class BookViewWidget extends StatefulWidget {
   }
 }
 class BookViewWidgetState extends State<BookViewWidget> {
-  List<Book> _books = [];
-  Api _api = Api();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -129,7 +126,7 @@ class BookViewWidgetState extends State<BookViewWidget> {
 
   Widget _buildImagePageItem(String imgUrl) {
     return ClipRRect(
-      borderRadius: widget.imageBorderRadius,
+      borderRadius: BorderRadius.circular(8),
       child: CachedNetworkImage(
         imageUrl: imgUrl,
         placeholder: (context, url) => Center(
