@@ -1,27 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
+part 'book.g.dart';
 
-
+@JsonSerializable()
 class Book {
   String title;
   String resume;
   String author;
   String cover;
- Book({
-    this.title,
-    this.resume,
-    this.author,
-    this.cover,
+ Book();
 
-  });
+  factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
-  factory Book.fromJson(Map<String, dynamic> parsedJson){
-    return Book(
-        title: parsedJson['title'],
-        resume : parsedJson['resume'],
-        author : parsedJson ['author'],
-        cover : parsedJson ['cover'],
-     );
+  Map<String, dynamic> toJson() => _$BookToJson(this);
   }
 
-
-}
