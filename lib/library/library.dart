@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:arvore_app/library/bookView.dart';
 import 'package:arvore_app/util/client_api.dart';
 import 'package:flutter/material.dart';
 
@@ -45,15 +46,16 @@ class _LibraryPageState extends State<LibraryPage> {
                         itemCount: _books.length,
                         itemBuilder: (BuildContext context, int index) {
                           Book book = _books[index];
-                          return Card(
+                          return InkWell(
+                              child: Card(
                             elevation: 5,
                             child: Container(
-                              height: 150.0,
+                              height: 170.0,
                               child: Row(
                                 children: <Widget>[
                                   Container(
-                                    height: 150.0,
-                                    width: 130,
+                                    height: 170.0,
+                                    width: 140,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(5),
@@ -64,12 +66,15 @@ class _LibraryPageState extends State<LibraryPage> {
                                                 NetworkImage("${book.cover}"))),
                                   ),
                                   Container(
-                                    height: 100,
+                                    height: 170,
+                                    width: 250,
                                     child: Padding(
-                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                      child: Column(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text("${book.title}",
                                               style: TextStyle(
@@ -82,31 +87,15 @@ class _LibraryPageState extends State<LibraryPage> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 100,
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Text("${book.resume}",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Quicksand',
-                                                )),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
                                 ],
                               ),
                             ),
+                          ),
+                            splashColor: Color(0xFFFF9900),
+                            onTap: () async {
+                              Navigator.push(context, new MaterialPageRoute(builder: (context) => BookViewWidget(imageUrls: ["${book.pages}"],imageBorderRadius: BorderRadius.circular(5.0),)),
+                              );
+                            },
                           );
                         },
                       ))));
