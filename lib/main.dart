@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         bottomAppBarColor: colorCustom,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: AppConstants.of(context).labelTitle),
+    home: MyHomePage(title: AppConstants.of(context).labelTitle),
     );
   }
 }
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 65,
                   width: 350,
                   child: RaisedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.push(context, new MaterialPageRoute(builder: (context) => StudentActionsPage()),
                         );
                       },
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 65,
                   width: 350,
                   child: RaisedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                          Navigator.push(context, new MaterialPageRoute(builder: (context) => TeacherActionsPage()),
                         );
                       },

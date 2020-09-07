@@ -1,13 +1,16 @@
-import 'package:arvore_app/util/constants.dart';
-import 'package:arvore_app/main.dart';
+import 'dart:core';
+import 'package:arvore_app/util/client_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:splashscreen/splashscreen.dart';
+
+import 'book.dart';
+
+
 
 class LibraryPage extends StatefulWidget {
   @override
   _LibraryPageState createState() => _LibraryPageState();
 }
+
 
 Map<int, Color> color = {
   50: Color.fromRGBO(177, 208, 174, .1),
@@ -24,36 +27,48 @@ Map<int, Color> color = {
 
 MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
 
+
+
+
+
 class _LibraryPageState extends State<LibraryPage> {
+  List<Book> _books;
+  Api _api = Api();
+
+  @override
+  void initState() {
+    super.initState();
+    getBooks();
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConstants
-          .of(context)
-          .labelTitle,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF7F4E6),
-        primarySwatch: colorCustom,
-        bottomAppBarColor: colorCustom,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LibraryWidget(),
+    return SafeArea(
+        child: Scaffold(
+          body: Center(
+            child: _books == null
+                ? CircularProgressIndicator()
+                : ListView.builder(
+                itemCount: _books.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Book book = _books[index];
+
+                  return ListTile (
+                    title: Text("${book.title}"),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blueAccent,
+                      backgroundImage: NetworkImage("${book.cover}"),
+                    ),
+                  );
+                }
+            ),
+          ),
+        )
     );
   }
-}
-
-Future<bool> _willPopCallback() async {
-  return true;
-}
-
-
-class LibraryWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-            appBar: AppBar(
-                title: Text("LibraryPage")
-            )
-    );
+  void getBooks() async {
+    _books = await _api.http_get("book");
+    setState(() {});
   }
+
 }
+

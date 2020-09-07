@@ -25,7 +25,9 @@ class AppConstants extends InheritedWidget {
   final String loadingPath = 'assets/loading.flr';
   final String loadingPath1 = 'assets/loading_book.flr';
   final String loadingPath2 = 'assets/loading_clear.flr';
+  final String loadingDots = 'assets/loading_dots.flr';
   final String animationType = 'loading';
+
 
   @override
   bool updateShouldNotify(AppConstants oldWidget) => false;

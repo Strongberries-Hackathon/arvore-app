@@ -111,7 +111,7 @@ class TeacherActionsWidget extends StatelessWidget {
                   width: 350,
                   child: RaisedButton.icon(
                       onPressed: () {
-                        Navigator.push(context, new MaterialPageRoute(builder: (context) => TeacherActivityPage()),
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherActivityPage()),
                         );
                       },
                       shape: RoundedRectangleBorder(

@@ -20,12 +20,16 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+
+
 dependencies:
   splashscreen: ^1.2.0
   flare_flutter: ^2.0.1
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.7.5
+  http: ^0.12.0+2
+  json_annotation: ^2.0.0
 
 
 flutter_icons:
@@ -41,6 +45,8 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.0.0
+  json_serializable: ^2.0.0
 
 
 # The following section is specific to Flutter.
@@ -57,12 +63,11 @@ flutter:
     - assets/loading.flr
     - assets/loading_book.flr
     - assets/loading_clear.flr
+    - assets/loading_dots.flr
   fonts:
     - family: Quicksand
       fonts:
         - asset: assets/fonts/Quicksand-Regular.ttf
         - asset: assets/fonts/Quicksand-Bold.ttf
-
-
 
 
