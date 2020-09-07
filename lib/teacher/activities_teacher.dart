@@ -32,12 +32,18 @@ class _TeacherActivityPageState extends State<TeacherActivityPage> {
     return MaterialApp(
       title: AppConstants.of(context).labelTitle,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF7F4E6),
-        primarySwatch: colorCustom,
-        bottomAppBarColor: colorCustom,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Quicksand',
-      ),
+          scaffoldBackgroundColor: const Color(0xFFF7F4E6),
+          primarySwatch: colorCustom,
+          bottomAppBarColor: colorCustom,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'Quicksand',
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              decorationColor: Colors.red,
+            ),
+          )),
       home: TeacherActivityWidget(),
     );
   }
@@ -85,11 +91,11 @@ class TeacherActivityWidget extends StatelessWidget {
                       ),
                       options: [
                         FormBuilderFieldOption(
-                            value: 'primeiroAno', child: Text('1° ANO')),
+                            value: 'primeiroAno', child: Text('1° ano')),
                         FormBuilderFieldOption(
-                            value: 'segundoAno', child: Text('2° ANO')),
+                            value: 'segundoAno', child: Text('2° ano')),
                         FormBuilderFieldOption(
-                            value: 'terceiroAno', child: Text('3° ANO')),
+                            value: 'terceiroAno', child: Text('3° ano')),
                       ],
                       validators: [
                         CustomValidator.required(),

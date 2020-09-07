@@ -26,7 +26,7 @@ Map<int, Color> color = {
 MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
 
 class _LibraryPageState extends State<LibraryPage> {
-  List<Book> _books = [];
+  var _books;
   Api _api = Api();
 
   @override
@@ -45,58 +45,67 @@ class _LibraryPageState extends State<LibraryPage> {
                     : ListView.builder(
                         itemCount: _books.length,
                         itemBuilder: (BuildContext context, int index) {
-                          Book book = _books[index];
+                          var book = _books[index];
                           return InkWell(
-                              child: Card(
-                            elevation: 5,
-                            child: Container(
-                              height: 170.0,
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    height: 170.0,
-                                    width: 140,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(5),
-                                            topLeft: Radius.circular(5)),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image:
-                                                NetworkImage("${book.cover}"))),
-                                  ),
-                                  Container(
-                                    height: 170,
-                                    width: 250,
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text("${book.title}",
-                                              style: TextStyle(
-                                                color: Color(0xFF619D5C),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15,
-                                                fontFamily: 'Quicksand',
-                                              )),
-                                        ],
+                            child: Card(
+                              elevation: 5,
+                              child: Container(
+                                height: 170.0,
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170.0,
+                                      width: 140,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(5),
+                                              topLeft: Radius.circular(5)),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  "${book['cover']}"))),
+                                    ),
+                                    Container(
+                                      height: 170,
+                                      width: 250,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text("${book['title']}",
+                                                style: TextStyle(
+                                                  color: Color(0xFF619D5C),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Quicksand',
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
                             splashColor: Color(0xFFFF9900),
                             onTap: () async {
-                              Navigator.push(context, new MaterialPageRoute(builder: (context) => BookViewWidget(imageUrls: ["${book.pages}"])),
+                              List<String> images = [];
+                              await book['pages'].forEach((page) {
+                                print(page.toString());
+                                images.add(page.toString());
+                              });
+                               Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                        BookViewWidget(imageUrls: images)),
                               );
-                            }
-                            ,
+                            },
                           );
                         },
                       ))));
@@ -106,17 +115,7 @@ class _LibraryPageState extends State<LibraryPage> {
     var result = await _api.http_get("book");
     if (result.ok) {
       setState(() {
-        var in_books = result.data as List<dynamic>;
-        in_books.forEach((in_book) {
-          _books.add(Book(
-            in_book['id'],
-            in_book['title'],
-            in_book['resume'],
-            in_book['author'],
-            in_book['cover'],
-            List<String>.from(in_book['pages'].map((s) => s as String))
-          ));
-        });
+        _books = result.data as dynamic;
       });
     }
   }
