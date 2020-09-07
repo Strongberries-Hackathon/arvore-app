@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'book.dart';
 
-
-
 class LibraryPage extends StatefulWidget {
   @override
   _LibraryPageState createState() => _LibraryPageState();
 }
-
 
 Map<int, Color> color = {
   50: Color.fromRGBO(177, 208, 174, .1),
@@ -27,12 +24,8 @@ Map<int, Color> color = {
 
 MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
 
-
-
-
-
 class _LibraryPageState extends State<LibraryPage> {
-  List<Book> _books;
+  List<Book> _books = [];
   Api _api = Api();
 
   @override
@@ -40,35 +33,47 @@ class _LibraryPageState extends State<LibraryPage> {
     super.initState();
     getBooks();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          body: Center(
-            child: _books == null
-                ? CircularProgressIndicator()
-                : ListView.builder(
+      body: Center(
+        child: _books == null
+            ? CircularProgressIndicator()
+            : ListView.builder(
                 itemCount: _books.length,
                 itemBuilder: (BuildContext context, int index) {
                   Book book = _books[index];
 
-                  return ListTile (
+                  return ListTile(
                     title: Text("${book.title}"),
                     leading: CircleAvatar(
                       backgroundColor: Colors.blueAccent,
                       backgroundImage: NetworkImage("${book.cover}"),
                     ),
                   );
-                }
-            ),
-          ),
-        )
-    );
+                }),
+      ),
+    ));
   }
+
   void getBooks() async {
-    _books = await _api.http_get("book");
-    setState(() {});
+    var result = await _api.http_get("book");
+    if (result.ok) {
+      setState(() {
+        var in_books = result.data as List<dynamic>;
+        in_books.forEach((in_book) {
+          _books.add(Book(
+            in_book['title'],
+            in_book['resume'],
+            in_book['author'],
+            in_book['id'],
+            in_book['cover'],
+            in_book['page'],
+          ));
+        });
+      });
+    }
   }
-
 }
-

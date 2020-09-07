@@ -1,16 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'book.g.dart';
 
 @JsonSerializable()
 class Book {
+  String id;
   String title;
   String resume;
   String author;
   String cover;
- Book();
+  List<String> pages;
 
-  factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
+  Book(this.id, this.title, this.resume, this.author, this.cover,this.pages);
 
-  Map<String, dynamic> toJson() => _$BookToJson(this);
+
+
   }
 
