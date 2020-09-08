@@ -58,14 +58,14 @@ class _MemoryPageState extends State<MemoryPage> {
               ),
               Positioned(
                 bottom: 460.0,
-                left: 280,
+                left: 260,
                 child: _buildCircleAvatar(
                     AppConstants.of(context).urlPhotoMock9,
                     EdgeInsets.only(bottom: 0)),
               ),
               Positioned(
                 bottom: 280.0,
-                left: 300,
+                left: 280,
                 child: _buildCircleAvatar(
                     AppConstants.of(context).urlPhotoMock7,
                     EdgeInsets.only(bottom: 0)),

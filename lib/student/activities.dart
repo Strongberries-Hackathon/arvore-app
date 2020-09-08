@@ -41,6 +41,15 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   }
 
   Widget _activitiesListWidget() {
+    const rowSpacer=TableRow(
+        children: [
+          SizedBox(
+            height: 8,
+          ),
+          SizedBox(
+            height: 8,
+          )
+        ]);
     return Scaffold(
       appBar: AppBar(
         title: Text('Table Example'),
@@ -59,6 +68,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
               TableCell(child: Center(child: Text('Atividade'))),
               TableCell(child: Center(child: Text('Status'))),
             ]),
+            rowSpacer,
             TableRow(children: [
               TableCell(
                 child: Center(child: Text('Chapeuzinho Amarelo')),
