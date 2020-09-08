@@ -25,73 +25,76 @@ MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
 class _MemoryPageState extends State<MemoryPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConstants.of(context).labelTitle,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF7F4E6),
-        primarySwatch: colorCustom,
-        bottomAppBarColor: colorCustom,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MemoryWidget(),
-    );
+    return SafeArea(
+        child: Scaffold(
+            backgroundColor: Color(0xFFB1D0AE),
+            body: Stack(children: <Widget>[
+              Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                    image: new AssetImage(AppConstants.of(context).imageTree),
+                    fit: BoxFit.cover,
+                  ))),
+              Positioned(
+                bottom: 400.0,
+                child: _buildCircleAvatar(AppConstants.of(context).urlPhotoMock,
+                    EdgeInsets.only(bottom: 0)),
+              ),
+              Positioned(
+                bottom: 500.0,
+                left: 110,
+                child: _buildCircleAvatar(
+                    AppConstants.of(context).urlPhotoMock1,
+                    EdgeInsets.only(bottom: 0)),
+              ),
+              Positioned(
+                bottom: 290.0,
+                left: 120,
+                child: _buildCircleAvatar(
+                    AppConstants.of(context).urlPhotoMock8,
+                    EdgeInsets.only(bottom: 0)),
+              ),
+              Positioned(
+                bottom: 460.0,
+                left: 280,
+                child: _buildCircleAvatar(
+                    AppConstants.of(context).urlPhotoMock9,
+                    EdgeInsets.only(bottom: 0)),
+              ),
+              Positioned(
+                bottom: 280.0,
+                left: 300,
+                child: _buildCircleAvatar(
+                    AppConstants.of(context).urlPhotoMock7,
+                    EdgeInsets.only(bottom: 0)),
+              )
+            ])));
   }
 }
 
-class MemoryWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage(AppConstants.of(context).imageTree),
-                fit: BoxFit.cover,
-              ))),
-
-      Positioned(
-        bottom: 400.0,
-        child: _buildCircleAvatar( AppConstants.of(context).urlPhotoMock, EdgeInsets.only(bottom: 0)),
-      ),
-      Positioned(
-        bottom: 500.0,
-        left: 130,
-        child: _buildCircleAvatar( AppConstants.of(context).urlPhotoMock1, EdgeInsets.only(bottom: 0)),
-      ),
-      Positioned(
-        bottom: 290.0,
-        left: 140,
-        child: _buildCircleAvatar( AppConstants.of(context).urlPhotoMock8, EdgeInsets.only(bottom: 0)),
-      ),
-      Positioned(
-        bottom: 460.0,
-        left: 320,
-        child: _buildCircleAvatar( AppConstants.of(context).urlPhotoMock9, EdgeInsets.only(bottom: 0)),
-      ),
-      Positioned(
-        bottom: 280.0,
-        left: 320,
-        child: _buildCircleAvatar( AppConstants.of(context).urlPhotoMock7, EdgeInsets.only(bottom: 0)),
-      )
-    ]);
-  }
-
-  Widget _buildCircleAvatar(String photo, EdgeInsets padding) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container (
-            height: 100,
-            width: 100,
-            child: CircleAvatar(
-              radius: 5,
+Widget _buildCircleAvatar(String photo, EdgeInsets padding) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      return Container(
+          height: 150,
+          width: 150,
+          child: FlatButton(
+             child: CircleAvatar(
+              radius: 45,
               backgroundImage: NetworkImage(
                 photo,
               ),
-            )
-        );
-      },
-    );
-  }
+            ),
+            onPressed: () async {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => (PhotoViewWidget(image: photo,))),
+              );
+            },
+          ));
+    },
+  );
 }

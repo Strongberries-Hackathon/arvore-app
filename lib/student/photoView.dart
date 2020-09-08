@@ -1,5 +1,4 @@
 import 'package:arvore_app/util/constants.dart';
-import 'package:arvore_app/util/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
