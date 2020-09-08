@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:arvore_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:arvore_app/util/client_api.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 class TeacherActivityPage extends StatefulWidget {
   @override
@@ -25,6 +22,7 @@ Map<int, Color> color = {
 };
 
 MaterialColor colorCustom = MaterialColor(0xFFB1D0AE, color);
+Api _api = Api();
 
 class _TeacherActivityPageState extends State<TeacherActivityPage> {
   @override
@@ -37,26 +35,20 @@ class _TeacherActivityPageState extends State<TeacherActivityPage> {
         bottomAppBarColor: colorCustom,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Quicksand',
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            decorationColor: Colors.red,
+          ),
+        ),
+        textTheme: TextTheme(
+          bodyText2: TextStyle(fontSize: 15.0, fontFamily: 'Quicksand'),
+          bodyText1: TextStyle(fontSize: 15.0, fontFamily: 'Quicksand'),
+        ),
       ),
       home: TeacherActivityWidget(),
     );
-  }
-}
-
-class CustomValidator {
-  static FormFieldValidator required({
-    String errorText = 'Campo obrigatório',
-  }) {
-    return (valueCandidate) {
-      if (valueCandidate == null ||
-          ((valueCandidate is Iterable ||
-                  valueCandidate is String ||
-                  valueCandidate is Map) &&
-              valueCandidate.length == 0)) {
-        return errorText;
-      }
-      return null;
-    };
   }
 }
 
@@ -85,15 +77,34 @@ class TeacherActivityWidget extends StatelessWidget {
                       ),
                       options: [
                         FormBuilderFieldOption(
-                            value: 'primeiroAno', child: Text('1° ANO')),
+                            value: 'primeiroAno', child: Text('1° ano')),
                         FormBuilderFieldOption(
-                            value: 'segundoAno', child: Text('2° ANO')),
+                            value: 'segundoAno', child: Text('2° ano')),
                         FormBuilderFieldOption(
-                            value: 'terceiroAno', child: Text('3° ANO')),
+                            value: 'terceiroAno', child: Text('3° ano')),
                       ],
                       validators: [
                         CustomValidator.required(),
                       ],
+                    ),
+                    SizedBox(height: 30),
+                    FormBuilderDropdown(
+                      attribute: "book",
+                      decoration: InputDecoration(
+                          labelText: "Escolha o livro relacionado a atividade"),
+                      initialValue: 'Chapeuzinho Amarelo',
+                      hint: Text('Escolha o livro relacionado a atividade'),
+                      validators: [
+                        CustomValidator.required(),
+                      ],
+                      items: [
+                        'Malala',
+                        'Chapeuzinho Amarelo',
+                        'Somos Todos Extraordinários'
+                      ]
+                          .map((livro) => DropdownMenuItem(
+                              value: livro, child: Text("$livro")))
+                          .toList(),
                     ),
                     SizedBox(height: 30),
                     FormBuilderRadioGroup(
@@ -129,6 +140,7 @@ class TeacherActivityWidget extends StatelessWidget {
                       keyboardType: TextInputType.text,
                     ),
                   ])),
+              SizedBox(height: 30),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -142,6 +154,24 @@ class TeacherActivityWidget extends StatelessWidget {
                         if (_fbKey.currentState.saveAndValidate()) {
                           print(_fbKey.currentState.value);
                           _saveActivity(_fbKey.currentState.value);
+                          return showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Atividade Salva'),
+                                  content: const Text(
+                                      'Atividade criada com sucesso!'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Ok'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        _fbKey.currentState.reset();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
                         } else {
                           print(_fbKey.currentState.value);
                           print('validation failed');
@@ -168,7 +198,6 @@ class TeacherActivityWidget extends StatelessWidget {
 }
 
 void _saveActivity(data) async {
-  Api _api = Api();
   var fromData = new Map<String, dynamic>.from(data);
 
   for (var grade in fromData["grades"]) {
@@ -181,7 +210,7 @@ void _saveActivity(data) async {
         studantsArray.add(studant);
       });
       var payload = {
-        "book_id": 1,
+        "book_id": 'book2',
         "description": fromData['description'],
         "studants": studantsArray,
         "type": fromData['type']
@@ -191,10 +220,19 @@ void _saveActivity(data) async {
   }
 }
 
-@JsonSerializable()
-class Activities {
-  String grades;
-  String type;
-  String description;
-  Activities(this.grades, this.type, this.description);
+class CustomValidator {
+  static FormFieldValidator required({
+    String errorText = 'Campo obrigatório',
+  }) {
+    return (valueCandidate) {
+      if (valueCandidate == null ||
+          ((valueCandidate is Iterable ||
+                  valueCandidate is String ||
+                  valueCandidate is Map) &&
+              valueCandidate.length == 0)) {
+        return errorText;
+      }
+      return null;
+    };
+  }
 }
